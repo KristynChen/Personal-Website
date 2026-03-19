@@ -1,0 +1,121 @@
+\documentclass[UTF8,a4paper,10pt]{ctexart}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{microtype}
+
+% Adjust margins to fit summary and new content on one page
+
+\addtolength{\oddsidemargin}{-0.75in}
+\addtolength{\evensidemargin}{-0.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{\vspace{-7pt}\heiti\bfseries\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+
+% Macros
+\newcommand{\resumeItem}[1]{\item\small{\linespread{1.1}\selectfont #1\par}\vspace{-0.5pt}}
+\newcommand{\resumeProjectHeading}[2]{%
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \normalsize #1 & #2 \\
+  \end{tabular*}\vspace{-4pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[label={}, leftmargin=0.15in]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[label=\tiny$\bullet$, itemsep=0pt, topsep=3pt, parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-6pt}}
+
+\begin{document}
+
+% HEADER
+\begin{center}
+  \textbf{\large \heiti 陈以珊 (Yishan Chen)} \\ \vspace{1pt}
+  \small (+86) 150 0093 8707 $|$ 微信: kristyn5942 $|$ \href{mailto:Kristyn921207@gmail.com}{Kristyn921207@gmail.com} \\ \vspace{1pt}
+  \href{https://kristynchen.github.io/Personal-Website/}{\underline{个人网站}} $|$ \href{https://github.com/kristynchen}{\underline{GitHub}}
+\end{center}
+\vspace{-12pt}
+
+% 个人简介
+\section{助教申请个人简介}
+\small {上海交通大学密西根学院电子与计算机工程专业学生，拥有丰富的高等教育助教 (TA) 经验。连续三个学期担任 ENGR1000J 工程导论助教，被授予三次「优秀助教」称号。擅长自动化教学管理與課程運營，具備優秀的跨文化溝通與團隊協作能力，致力於為學生提供高品質的學習支持。}
+\vspace{-4pt}
+
+% 教育背景
+\section{教育背景}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{上海交通大学} \quad \quad | \quad 密西根学院 电子与计算机工程学士 \quad | \quad 中国·上海 }{2026年8月（预计毕业）}
+    \resumeItemListStart
+      \resumeItem{\textbf{獎學金}：台灣學生獎學金（2023--2025）；\textbf{百賢亞洲未來領袖獎學金 AFLSP }——面向亞洲頂尖高校學生的跨文化交流及領導力項目。}
+      \resumeItem{\textbf{相關課程}：STAT4060J Computational Methods, STAT4710J Data Science and Analytics using Python}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{庆应义塾大学} \quad \quad | \quad 计算机科学（交换生） \quad | \quad 日本·东京}{2025年3月 -- 2025年8月}
+\resumeSubHeadingListEnd
+
+% 助教经历
+\section{助教經歷 (TA Experience)}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{上海交通大学} \quad | \quad ENRG1000J 工程导论 助教}{2023年9月 -- 2025年12月}
+    \resumeItemListStart
+      \resumeItem{帶領 60+ 名本地與國際混合班學生完成每週 Lab 課程，負責講解實驗原理、指導代碼編寫及操作安全。}
+      \resumeItem{主動識別助教工作中的重複性痛點，自行構建 n8n 自動化 Pipeline（Gmail $\times$ Google Sheets），覆蓋學生評量解析、合格證書自動發送、改分記錄匯總及期末作業分級打包交付全流程。}
+      \resumeItem{每學期節省 8+ 小時人工操作，消除手動處理導致的漏發/錯發風險，該自動化工作流具備高度可復用性。}
+      \resumeItem{連續三次獲評「優秀助教」並獲教授邀請留任，展現跨文化溝通與多元團隊協作能力。}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% 工作与实习经历
+\section{其他工作與實習經歷}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{上海比特无限智能科技有限公司} \quad | \quad AI 应用工程师实习生}{2026年3月 -- 至今}
+    \resumeItemListStart
+      \resumeItem{參與 LangGraph 向 MCP 架構遷移，主導構建基於 LLM 的自動化測試與評估框架：設計 Prompt Engineering 與意圖識別機制，提升系統識別準確率。}
+      \resumeItem{構建自動化 Benchmark 與數字化看板，實現測試指標實時可視化。}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% 项目经历
+\section{精選項目經歷}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{\href{https://terny.ai/}{terny.ai} — AI 科研机会匹配系统} \quad | \quad Python, LLM}{2025年11月 -- 至今}
+    \resumeItemListStart
+      \resumeItem{主導 Agentic AI 多智能體架構設計，構建協同決策流水線，實現研究方向理解、能力建模與雙向匹配。}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{假新闻文本分类与数据可视化 Dashboard} \quad | \quad Python, R}{2025年9月 -- 2025年12月}
+    \resumeItemListStart
+      \resumeItem{處理 7 萬條新聞數據，使用 TF-IDF + SVM 達到 93\% 準確率。}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% 技能
+\section{技能}
+\vspace{2pt}
+\small
+\textbf{教學與管理}：n8n 自动化、Google Workspace 自动化、跨文化溝通、Lab 管理 \\
+\textbf{編程語言}：Python, R, SQL, C/C++, MATLAB, LaTeX \\
+\textbf{AI 工具}：LLM Prompt Engineering, LangGraph, VLM \\
+\textbf{語言能力}：中文（母語），英語（流利），日語（對話）
+
+\end{document}
