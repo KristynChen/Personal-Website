@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yishan CHEN | AI Agent Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap"
         rel="stylesheet">
@@ -159,58 +161,56 @@
             position: absolute;
             inset: 0;
             transform-style: preserve-3d;
+            transform-origin: center center;
+            perspective: 1200px;
             pointer-events: none;
             z-index: 1;
         }
 
         .skill-card {
             position: absolute;
-            width: 170px;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid theme('colors.forest / 15%');
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            opacity: 0;
-            cursor: grab;
-            transition: opacity 0.5s ease-out, box-shadow 0.3s ease;
-            user-select: none;
-            pointer-events: auto;
-            /* 3D / Physics Properties */
-            --parallax-x: 0px;
-            --parallax-y: 0px;
-            --base-x: 0px;
-            --base-y: 0px;
-            --base-z: 0px;
-            --rot-z: 0deg;
-            transform: translate3d(
-                calc(var(--base-x) + var(--parallax-x)), 
-                calc(var(--base-y) + var(--parallax-y)), 
-                var(--base-z)
-            ) rotateZ(var(--rot-z));
-        }
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 130px;
+            background-color: #FDFDFD;
+            background-image: url("https://www.transparenttextures.com/patterns/cardboard-flat.png");
+            border-radius: 3px;
+            padding: 24px 20px;
+            box-sizing: border-box;
+            
+            /* 模擬物理厚度的多重陰影 */
+            box-shadow: 
+                0 1px 1px rgba(0,0,0,0.05), 
+                0 2px 2px rgba(0,0,0,0.05), 
+                0 4px 4px rgba(0,0,0,0.05), 
+                0 8px 15px rgba(0,0,0,0.1); 
 
-        /* Subtle shake on collision-like settling */
-        .skill-card.landed {
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease-out, box-shadow 0.3s ease;
+            /* 邊緣微光：模擬裁切邊緣的反射 */
+            border: 0.5px solid rgba(255,255,255,0.8);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            pointer-events: auto;
+            cursor: grab;
+            user-select: none;
+            opacity: 0;
+            transform-style: preserve-3d;
         }
 
         .skill-card:active {
             cursor: grabbing;
         }
 
-        .skill-card:hover {
-            box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.35);
-            z-index: 1001 !important;
-        }
-
         .skill-card h4 {
-            @apply font-serif font-bold text-base mb-1 text-forest;
+            @apply font-serif font-bold text-lg mb-2 text-forest;
         }
 
         .skill-card p {
-            @apply text-[10px] text-dark/70 leading-tight font-sans;
+            @apply text-xs text-dark/70 leading-relaxed font-sans;
         }
     </style>
 </head>
@@ -1121,113 +1121,110 @@
                 { id: 8, title: 'skill_8_title', desc: 'skill_8_desc' },
             ];
 
-            // --- Intro Physics Gravity Rain Logic ---
+            // --- GSAP Cardboard Explosion Logic ---
+            gsap.registerPlugin(Draggable);
+
             const introOrb = document.getElementById('intro-orb');
             const introBg = document.querySelector('.intro-bg');
             const skillsContainer = document.getElementById('skills-container');
-            const cardData = [];
             let started = false;
 
-            function startGravityRain() {
+            // 讓卡片可以被移動
+            function makeDraggable(el) {
+                Draggable.create(el, {
+                    type: "x,y",
+                    edgeResistance: 0.65,
+                    bounds: window,
+                    onPress: function() {
+                        // 抓起時讓它在最上層
+                        gsap.set(this.target, { zIndex: 1000 });
+                        this.target.style.cursor = 'grabbing';
+                    },
+                    onRelease: function() {
+                        this.target.style.cursor = 'grab';
+                        // 稍微恢復一下 zIndex
+                        gsap.set(this.target, { zIndex: 100 });
+                    }
+                });
+            }
+
+            introOrb.addEventListener('click', () => {
                 if (started) return;
                 started = true;
 
-                // 1. Clear Orb gracefully
-                introOrb.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 1, 1)';
-                introOrb.style.transform = 'scale(0) translateY(100px)';
-                introOrb.style.opacity = '0';
-                introOrb.style.pointerEvents = 'none';
+                // 1. 球體縮小並消失 (關閉 CSS 動畫避免 overriding GSAP)
+                introOrb.style.animation = 'none';
+                gsap.to(introOrb, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: "back.in(1.7)",
+                    onComplete: () => {
+                        introOrb.style.display = 'none';
+                    }
+                });
 
-                // 2. Falling sequence
+                // 2. 生成並執行掉落動畫
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight;
 
-                skillsConfig.forEach((skill, index) => {
+                skillsConfig.forEach((skill, i) => {
                     const card = document.createElement('div');
                     card.className = 'skill-card';
-                    
-                    // Initial horizontal distribution
-                    const startX = (Math.random() - 0.5) * (screenWidth * 0.8);
-                    const startY = -(screenHeight * 1.2); // Start way above
-                    
-                    // Landing "Stack" Logic: Varying depths and scattered stack positions at the bottom
-                    const landingY = (screenHeight * 0.2) + (Math.random() * 100); // Settling in a bottom-ish area
-                    const landingRot = (Math.random() - 0.5) * 80; // Wild rotations for "stacking" look
-                    const depthZ = (Math.random() - 0.5) * 300;
-
-                    const data = {
-                        element: card,
-                        baseX: startX, 
-                        baseY: startY,
-                        currentBaseX: startX,
-                        currentBaseY: startY,
-                        baseZ: depthZ,
-                        parallaxSpeed: 0.04 + Math.random() * 0.08
-                    };
-
-                    card.style.setProperty('--base-x', `${startX}px`);
-                    card.style.setProperty('--base-y', `${startY}px`);
-                    card.style.setProperty('--base-z', `${depthZ}px`);
-                    card.style.setProperty('--rot-z', `${(Math.random() - 0.5) * 360}deg`); // Initial spin
-                    card.style.zIndex = index + 1;
-
                     card.innerHTML = `
-                        <h4 data-i18n="${skill.title}" class="font-bold text-forest">${translations[currentLang][skill.title]}</h4>
-                        <p data-i18n="${skill.desc}" class="text-[11px] opacity-70 mt-1">${translations[currentLang][skill.desc]}</p>
+                        <h4 data-i18n="${skill.title}">${translations[currentLang][skill.title]}</h4>
+                        <p data-i18n="${skill.desc}">${translations[currentLang][skill.desc]}</p>
                     `;
-
                     skillsContainer.appendChild(card);
 
-                    // Dragging (Pick up from stack)
-                    let isDragging = false;
-                    let startMouseX, startMouseY, initialBaseX, initialBaseY;
+                    // 最終散落位置與旋轉 (控制在螢幕邊界內，避免超出)
+                    const targetX = gsap.utils.random(30, screenWidth - 250);
+                    const targetY = gsap.utils.random(80, screenHeight - 150);
+                    const finalRot = gsap.utils.random(-25, 25);
 
-                    card.addEventListener('mousedown', (e) => {
-                        isDragging = true;
-                        card.style.zIndex = 2000;
-                        card.classList.remove('landed');
-                        startMouseX = e.clientX;
-                        startMouseY = e.clientY;
-                        initialBaseX = data.currentBaseX;
-                        initialBaseY = data.currentBaseY;
-                        card.style.transition = 'none';
+                    // 集中落點：掉到畫面下方四分之三處的區域
+                    const dropCenterX = (screenWidth / 2) - 110 + gsap.utils.random(-60, 60);
+                    const dropCenterY = (screenHeight * 0.75) - 65 + gsap.utils.random(-40, 40);
+
+                    // 初始狀態：在螢幕正上方的外面
+                    gsap.set(card, { 
+                        y: -300, 
+                        x: (screenWidth / 2) - 110 + gsap.utils.random(-30, 30), 
+                        rotation: gsap.utils.random(-10, 10), 
+                        opacity: 1,
+                        z: i * 5 
                     });
 
-                    document.addEventListener('mousemove', (e) => {
-                        if (!isDragging) return;
-                        data.currentBaseX = initialBaseX + (e.clientX - startMouseX);
-                        data.currentBaseY = initialBaseY + (e.clientY - startMouseY);
-                        data.element.style.setProperty('--base-x', `${data.currentBaseX}px`);
-                        data.element.style.setProperty('--base-y', `${data.currentBaseY}px`);
+                    // 執行兩段式掉落：先集中落地，再慢速彈開散落
+                    const tl = gsap.timeline({
+                        delay: i * 0.15, // 速度放慢，更有層次感
+                        onComplete: () => {
+                            makeDraggable(card); // 完成後可互動
+                        }
                     });
 
-                    document.addEventListener('mouseup', () => {
-                        if (!isDragging) return;
-                        isDragging = false;
-                        card.classList.add('landed');
-                    });
-
-                    cardData.push(data);
-
-                    // Gravity Fall Action
-                    const delay = index * 120 + Math.random() * 300;
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.classList.add('landed'); // Uses cubic-bezier for "impact" ease
-                        
-                        data.currentBaseY = landingY;
-                        card.style.setProperty('--base-y', `${landingY}px`);
-                        card.style.setProperty('--rot-z', `${landingRot}deg`);
-                    }, delay);
+                    // 階段 1: 掉落到集中點
+                    tl.to(card, {
+                        y: dropCenterY,
+                        x: dropCenterX,
+                        duration: 1.5,
+                        ease: "bounce.out" // 落地彈跳
+                    })
+                    // 階段 2: 慢慢散開到目標位置
+                    .to(card, {
+                        x: targetX,
+                        y: targetY,
+                        rotation: finalRot,
+                        duration: 2.0 + Math.random(), // 很慢地滑開
+                        ease: "power2.out"
+                    }, "-=0.8"); // 在第一次反彈快結束時就開始散開
                 });
 
                 // Show instruction hint
-                setTimeout(() => { document.getElementById('scroll-hint').style.opacity = '1'; }, 3000);
-            }
+                setTimeout(() => { document.getElementById('scroll-hint').style.opacity = '1'; }, 2000);
+            });
 
-            introOrb.addEventListener('click', startGravityRain);
-
-            // --- 3D Parallax Logic ---
+            // --- 3D Parallax & Mouse Move Tilt Logic ---
             let targetX = 0, targetY = 0;
             let currentX = 0, currentY = 0;
 
@@ -1238,17 +1235,22 @@
                 if (introBg) {
                     introBg.style.transform = `translate(${currentX * -25}px, ${currentY * -25}px) scale(1.1)`;
                 }
-
-                if (started) {
-                    cardData.forEach((data) => {
-                        // Subtle drift even in the stack
-                        const moveX = currentX * data.baseZ * data.parallaxSpeed;
-                        const moveY = currentY * data.baseZ * data.parallaxSpeed;
-                        data.element.style.setProperty('--parallax-x', `${moveX}px`);
-                        data.element.style.setProperty('--parallax-y', `${moveY}px`);
-                    });
-                } else if (introOrb) {
+                
+                if (!started && introOrb) {
                     introOrb.style.transform = `translate(${currentX * 12}px, ${currentY * 12}px)`;
+                }
+
+                // 全局搖擺感（模擬袋子左右晃動）
+                // 讓整個 skillsContainer 容器跟著滑鼠微旋轉與位移
+                if (started && skillsContainer) {
+                    gsap.to(skillsContainer, {
+                        rotationY: currentX * 15,  // 左右搖擺
+                        rotationX: -currentY * 10, // 上下搖擺
+                        x: currentX * 30,          // 輕微水平位移
+                        duration: 0.8,
+                        ease: "power2.out",
+                        overwrite: "auto"
+                    });
                 }
 
                 requestAnimationFrame(updateParallax);
