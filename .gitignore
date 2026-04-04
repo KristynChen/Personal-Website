@@ -1,0 +1,17 @@
+*.log
+*.aux
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+texput.log
+index copy.html
+.DS_Store
+# Temporary resumes or specific ones if needed
+# assets/resume/陈以珊-Apple LLM intern简历.pdf

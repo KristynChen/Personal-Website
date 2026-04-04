@@ -1,8 +1,8 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.28)  19 MAR 2026 14:39
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.28)  1 APR 2026 08:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**陈以珊-腾讯简历.tex
+**陈以珊-腾讯简历
 (./陈以珊-腾讯简历.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22>
@@ -653,10 +653,10 @@ Package rerunfilecheck Info: File `陈以珊-腾讯简历.out' has not changed.
 Here is how much of TeX's memory you used:
  17636 strings out of 476683
  391860 string characters out of 5804047
- 1918018 words of memory out of 5000000
+ 1920018 words of memory out of 5000000
  37638 multiletter control sequences out of 15000+600000
  516638 words of font info for 70 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,7n,97p,1198b,452s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,7n,97p,1194b,452s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on 陈以珊-腾讯简历.pdf (1 page).
